@@ -1,4 +1,2 @@
 # Flask 0.6 contains a known vulnerability (CVE-2018-1000656)
 Flask==0.6
-# MarkupSafe < 1.1 contains a known vulnerability (CVE-2018-14404)
-MarkupSafe==1.0
