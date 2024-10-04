@@ -31,7 +31,7 @@ jobs:
 
       # Step 4: Install dependencies from requirements.txt
       - name: Install dependencies from requirements.txt
-        run: jf pip install -r project/requirements.txt --module=jfrog-python-example
+        run: jf pip install -r requirements.txt --module=jfrog-python-example
 
       # Step 5: Install your own package
       - name: Install the project package
