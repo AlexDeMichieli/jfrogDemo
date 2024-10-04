@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.py
+src/main.py
+src/hello_jfrog.egg-info/PKG-INFO
+src/hello_jfrog.egg-info/SOURCES.txt
+src/hello_jfrog.egg-info/dependency_links.txt
+src/hello_jfrog.egg-info/top_level.txt
