@@ -1,34 +1,53 @@
 name: "JFrog Integration Example"
-on: push
+on: workflow_dispatch
+
+permissions:
+  actions: read
+  packages: write
+  contents: read
+  security-events: write
 
 jobs:
-  build:
-     runs-on: ubuntu-latest
-       
-     steps:
-       - name: Checkout
-         uses: actions/checkout@v3
-         
-       - name: Setup JFrog CLI
-         uses: jfrog/setup-jfrog-cli@v3
-         env:  
-           JF_URL: ${{ secrets.JF_URL }}
-           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-           
-       - name: Set CLI Config
-         run: jf pip-config --global=true --repo-resolve=jfrog-dummy-pypi
-           
-       - name: Install Deps
-         run: jf pip install .
-           
-       - name: Package the project
-         run: python setup.py sdist bdist_wheel
-         
-       - name: Publish
-         run: jf rt upload dist/ jfrog-dummy-pypi/
-         
-       - name: Publish Build info With JFrog CLI
-         run: |
+  build-publish-python:
+    runs-on: ubuntu-latest
+    env:
+      PYPI_REPO: 'jfrog-dummy-pypi'
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout the repository    
+        uses: actions/checkout@v4
+
+      # Step 2: Setup JFrog CLI
+      - uses: jfrog/setup-jfrog-cli@v4
+        name: Setup JFrog CLI
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+
+      # Step 3: Configure pip to use JFrog repository
+      - name: Configure JFrog pip
+        run: jf pip-config --repo-resolve=${{ env.PYPI_REPO }}
+
+      # Step 4: Install dependencies from requirements.txt
+      - name: Install dependencies from requirements.txt
+        run: jf pip install -r project/requirements.txt --module=jfrog-python-example
+
+      # Step 5: Install your own package
+      - name: Install the project package
+        run: jf pip install .
+
+      # Step 6: Build the Python project
+      - name: Build the project
+        run: python setup.py sdist bdist_wheel
+
+      # Step 7: Publish the Python package to JFrog PyPI
+      - name: Publish the Python package
+        run: jf rt upload dist/ ${{ env.PYPI_REPO }}/ --module=github-jfrog-pypi
+
+      # Step 8: Publish build info with JFrog CLI
+      - name: Publish build info
+        run: |
           # Collect environment variables for the build
           jf rt build-collect-env
           # Collect VCS details from git and add them to the build
