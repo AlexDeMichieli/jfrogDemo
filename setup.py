@@ -8,7 +8,6 @@ setup (
     version = '1.0.0',
     description = 'Example PyPI package',
     py_modules = ["main"],
-    package_dir = {'': 'src'},
     author = 'JFrog',
     author_email = 'jfrog@jfrog.com',
     long_description = long_description,
