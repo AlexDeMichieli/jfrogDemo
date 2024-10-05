@@ -1,6 +1,5 @@
 # Flask 0.6 contains a known vulnerability (CVE-2018-1000656)
 Flask==0.6
-ironic==25.0.0
 requests==2.19.0
 urllib3==1.25.8
 Jinja2==2.9.0
