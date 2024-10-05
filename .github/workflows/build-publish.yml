@@ -1,11 +1,17 @@
 name: "JFrog Python Package Publishing"
 on: push
 
+permissions:
+  id-token: write
+  contents: read
+  security-events: write  # Required for code scanning alerts
+
 jobs:
   build-publish-python:
     runs-on: ubuntu-latest
     env:
       PYPI_REPO: 'jfrog-dummy-pypi'
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout the repository    
@@ -17,6 +23,10 @@ jobs:
         env:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required for job summary and security scanning
+        with:
+          disable-auto-build-publish: false  # Ensure this is false if you want auto-publishing
+          disable-job-summary: false  # Ensure the job summary is not disabled
 
       # Step 3: Configure pip to use JFrog repository
       - name: Configure JFrog pip
@@ -40,3 +50,7 @@ jobs:
           jf rt build-collect-env
           jf rt build-add-git
           jf rt build-publish
+
+      # Step 8: Run JFrog Build Scan
+      - name: Run JFrog Build Scan
+        run: jf build-scan
