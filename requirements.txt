@@ -4,4 +4,3 @@ ironic==25.0.0
 requests==2.19.0
 urllib3==1.25.8
 Jinja2==2.9.0
-PyYAML==4.1
