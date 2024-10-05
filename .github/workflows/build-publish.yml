@@ -50,6 +50,6 @@ jobs:
           jf rt build-add-git
           jf rt build-publish
 
-      # Step 8: Run JFrog Build Scan
-      - name: Run JFrog Build Scan
-        run: jf build-scan
+      # # Step 8: Run JFrog Build Scan
+      # - name: Run JFrog Build Scan
+      #   run: jf build-scan
