@@ -4,14 +4,13 @@ on: push
 permissions:
   id-token: write
   contents: read
-  security-events: write  # Required for code scanning alerts
+  security-events: write  # Required for code scanning
 
 jobs:
   build-publish-python:
     runs-on: ubuntu-latest
     env:
       PYPI_REPO: 'jfrog-dummy-pypi'
-
     steps:
       # Step 1: Checkout the repository
       - name: Checkout the repository    
